@@ -15,7 +15,7 @@ services:
       - laravel-development
     depends_on:
       php-fpm:
-        condition: service_started  # Wait for php-fpm to start
+        condition: service_healthy  # Wait for php-fpm to be ready
 
   php-fpm:
     # For the php-fpm service, we will create a custom image to install the necessary PHP extensions and setup proper permissions.
@@ -44,6 +44,12 @@ services:
     depends_on:
       mysql:
         condition: service_healthy  # Wait for mysql to be ready
+    healthcheck:
+      test: ["CMD", "php-fpm-healthcheck"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 30s
 
   workspace:
    # For the workspace service, we will also create a custom image to install and setup all the necessary stuff.

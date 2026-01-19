@@ -80,8 +80,14 @@ RUN echo 'export NVM_DIR="$HOME/.nvm"' >> /home/www/.bashrc && \
 # Set the working directory
 WORKDIR /var/www
 
-# Override the entrypoint to avoid the default php entrypoint
-ENTRYPOINT []
+# Copy and set up entrypoint
+USER root
+COPY ./docker/development/workspace/entrypoint.sh /usr/local/bin/entrypoint.sh
+RUN chmod +x /usr/local/bin/entrypoint.sh
+USER www
+
+# Use entrypoint for auto-setup
+ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
 
 # Default command to keep the container running
 CMD ["bash"]

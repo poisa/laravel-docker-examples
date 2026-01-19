@@ -1,4 +1,4 @@
-.PHONY: up down restart build shell composer artisan npm logs ps clean
+.PHONY: up down restart build shell composer artisan npm dev logs ps clean
 
 # Start all containers in detached mode
 up:
@@ -35,6 +35,10 @@ artisan:
 # Run npm commands: make npm install, make npm run dev
 npm:
 	docker compose -f compose.dev.yaml exec workspace npm $(filter-out $@,$(MAKECMDGOALS))
+
+# Start Vite dev server (runs in foreground)
+dev:
+	docker compose -f compose.dev.yaml exec workspace npm run dev
 
 # View logs (all containers)
 logs:
