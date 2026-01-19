@@ -43,7 +43,7 @@ services:
       - laravel-development
     depends_on:
       mysql:
-        condition: service_started  # Wait for mysql to start
+        condition: service_healthy  # Wait for mysql to be ready
 
   workspace:
    # For the workspace service, we will also create a custom image to install and setup all the necessary stuff.
@@ -83,6 +83,12 @@ services:
       - mysql-data-development:/var/lib/mysql
     networks:
       - laravel-development
+    healthcheck:
+      test: ["CMD-SHELL", "mysqladmin ping -h localhost -u root -p\"$$MYSQL_ROOT_PASSWORD\""]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+      start_period: 30s
 
   redis:
     image: redis:alpine
