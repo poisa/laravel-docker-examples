@@ -40,7 +40,11 @@ npm:
 logs:
 	docker compose -f compose.dev.yaml logs -f
 
-# View logs for specific service: make logs-php, make logs-web
+# View Laravel application logs
+logs-laravel:
+	docker compose -f compose.dev.yaml exec workspace tail -F storage/logs/laravel.log
+
+# View logs for specific service: make logs-php-fpm, make logs-web, make logs-mysql
 logs-%:
 	docker compose -f compose.dev.yaml logs -f $*
 
