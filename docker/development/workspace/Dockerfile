@@ -1,6 +1,6 @@
 # docker/development/workspace/Dockerfile
 # Use the official PHP CLI image as the base
-FROM php:8.4-cli
+FROM php:8.5-cli
 
 # Set environment variables for user and group ID
 ARG UID=1000
@@ -22,7 +22,6 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     pdo_mysql \
     pdo_pgsql \
     pgsql \
-    opcache \
     intl \
     zip \
     bcmath \
