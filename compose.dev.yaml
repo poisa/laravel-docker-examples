@@ -42,8 +42,8 @@ services:
     networks:
       - laravel-development
     depends_on:
-      postgres:
-        condition: service_started  # Wait for postgres to start
+      mysql:
+        condition: service_started  # Wait for mysql to start
 
   workspace:
    # For the workspace service, we will also create a custom image to install and setup all the necessary stuff.
@@ -70,16 +70,17 @@ services:
     networks:
       - laravel-development
 
-  postgres:
-    image: postgres:16
+  mysql:
+    image: mysql:8.0
     ports:
-      - "${POSTGRES_PORT:-5432}:5432"
+      - "${MYSQL_PORT:-3306}:3306"
     environment:
-      - POSTGRES_DB=app
-      - POSTGRES_USER=laravel
-      - POSTGRES_PASSWORD=secret
+      - MYSQL_DATABASE=app
+      - MYSQL_USER=laravel
+      - MYSQL_PASSWORD=secret
+      - MYSQL_ROOT_PASSWORD=secret
     volumes:
-      - postgres-data-development:/var/lib/postgresql/data
+      - mysql-data-development:/var/lib/mysql
     networks:
       - laravel-development
 
@@ -92,4 +93,4 @@ networks:
   laravel-development:
 
 volumes:
-  postgres-data-development:
+  mysql-data-development:
